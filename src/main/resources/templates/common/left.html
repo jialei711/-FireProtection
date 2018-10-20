@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>左边</title>
+    <link rel="stylesheet" href="../../static/bootstrap/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="../../static/bootstrap/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="../../static/css/css.css">
+    <script src="../../static/js/jquery.min.js"></script>
+    <script src="../../static/js/popper.min.js"></script>
+    <script src="../../static/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $("#firstpane .menu_body:eq(0)").show();
+
+            $("#firstpane h3.menu_head").click(function(){
+                $(this).addClass("current").next("div.menu_body").slideToggle(300).siblings("div.menu_body").slideUp("slow");
+                $(this).siblings().removeClass("current");
+
+                var icon = document.getElementById('menut1');
+                var icpnSrc = icon.src;
+                var picName = icpnSrc.substring(icpnSrc.lastIndexOf("/")+1);
+                if(picName == 'pro_down.png'){
+                    icon.src = '../../static/image/pro_left.png';
+                }else if(picName == 'pro_left.png'){
+                    icon.src = '../../static/image/pro_down.png';
+                }
+
+            });
+
+            $("#secondpane .menu_body:eq(0)").show();
+            $("#secondpane h3.menu_head").mouseover(function(){
+                $(this).addClass("current").next("div.menu_body").slideDown(500).siblings("div.menu_body").slideUp("slow");
+                $(this).siblings().removeClass("current");
+            });
+        });
+    </script>
+</head>
+<body style="background: #F5F5F5;">
+
+<div id="accordion">
+
+    <div>
+        <ul class="nav nav-sidebar">
+            <li><a href="/admin/intergralRules" target="rightFrame"><img class="menu-icon" src="../../static/image/Star.png" width="16">积分规则</a></li>
+            <li><a  href="/admin/business" target="rightFrame"><img class="menu-icon" src="../../static/image/Home.png" width="16">门店管理</a></li>
+            <li><a href="#" target="rightFrame"><img class="menu-icon" src="../../static/image/Announcement.png" width="16">活动管理</a></li>
+
+            <li><a href="#" target="rightFrame"><img class="menu-icon" src="../../static/image/Users.png" width="16">用户查询</a></li>
+
+            <div id="firstpane">
+                <h3 class="menu_head">
+                    <img class="menu-icon" src="../../static/image/Chart.png" width="16">
+                    设备数据
+                    <img src="../../static/image/pro_down.png" id="menut1" width="25" style="float: right; margin-top: 15px; margin-left: 50px;">
+                </h3>
+                <div style="display:none;" class="menu_body">
+                    <a href="/equipment/getPageEquipment?pageIndex=0&pageSize=8" target="rightFrame">原始数据</a>
+                    <a href="/equipment/equipmentList" target="rightFrame">运行数据</a>
+                    <a href="#" target="rightFrame">用户数据</a>
+                </div>
+            </div>
+
+
+        </ul>
+    </div>
+
+
+    <!--<div class="card">-->
+        <!--<div class="card-header" data-toggle="collapse" style="height: 40px; line-height: 40px; width: 100%; background: #FFFFFF;" href="#collapseOne">-->
+            <!--<a class="card-link" style="text-decoration: none;">-->
+                <!--用户管理-->
+            <!--</a>-->
+        <!--</div>-->
+        <!--<div id="collapseOne" class="collapse" data-parent="#accordion">-->
+            <!--<div class="card-body" style="padding: 0px; margin: 0px;">-->
+                    <!--<a href="/admin/business" target="rightFrame"><button type="button" class="btn btn-info" style="width: 100%;">商家管理</button></a>-->
+                    <!--<button type="button" class="btn btn-warning" style="width: 100%;" target="rightFrame">客户管理</button>-->
+                    <!--<button type="button" class="btn btn-danger" style="width: 100%;" target="rightFrame">危险</button>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+
+
+
+    <!--<div class="card">-->
+        <!--<div class="card-header"  data-toggle="collapse" style="height: 40px; line-height: 40px; width: 100%; background: #FFFFFF;" href="#collapseTwo">-->
+            <!--<a class="collapsed card-link" style="text-decoration: none;">-->
+                <!--设备管理-->
+            <!--</a>-->
+        <!--</div>-->
+        <!--<div id="collapseTwo" class="collapse" data-parent="#accordion">-->
+            <!--<div class="card-body" style="padding: 0px; margin: 0px;">-->
+                <!--<a href="/equipment/getPageEquipment?pageIndex=0&pageSize=8" target="rightFrame"><button type="button" class="btn btn-info" style="width: 100%;">设备管理</button></a>-->
+                <!--<a href="/equipment/equipmentList" target="rightFrame"><button type="button" class="btn btn-warning" style="width: 100%;">设备管理1</button></a>-->
+                <!--<button type="button" class="btn btn-danger" style="width: 100%;">危险</button>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+
+
+
+
+    <!--<div class="card">-->
+    <!--<div class="card-header" data-toggle="collapse" style="height: 40px; line-height: 40px; width: 100%; background: #FFFFFF;" href="#collapseThree">-->
+        <!--<a class="collapsed card-link" style="text-decoration: none;">-->
+            <!--<img class="menu-icon" src="../../static/image/Chart.png" width="16">-->
+            <!--选项三-->
+        <!--</a>-->
+    <!--</div>-->
+    <!--<div id="collapseThree" class="collapse" data-parent="#accordion">-->
+        <!--<div class="card-body" style="padding: 0px; margin: 0px;">-->
+            <!--<button type="button" class="btn btn-info" style="width: 100%;">信息</button>-->
+            <!--<button type="button" class="btn btn-warning" style="width: 100%;">警告</button>-->
+            <!--<button type="button" class="btn btn-danger" style="width: 100%;">危险</button>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->
+
+
+
+</div>
+
+</body>
+</html>

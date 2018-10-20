@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../../static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../static/css/bootstrap-table.css">
+    <script src="../../static/js/jquery.min.js"></script>
+    <script src="../../static/js/popper.min.js"></script>
+    <script src="../../static/js/bootstrap.min.js"></script>
+    <script src="../../static/js/bootstrap-table.js"></script>
+    <script src="../../static/js/bootstrap-table-zh-CN.js"></script>
+    <script src="../../static/js/layer/layer.js"></script>
+    <script src="../../static/js/wxh.js"></script>
+    <script src="../../static/laydate/laydate.js"></script>
+    <script type="text/javascript" th:inline="javascript">
+
+
+       var item = {
+
+           id : '',
+           deiviceName : '',
+           deviceType : '',
+           buyDate : '',
+           buyAddress : '',
+           price : '',
+           buyValue : '',
+           dueDate : '',
+           addDate : '',
+           remark : ''
+       };
+
+       var searchItem = {
+           id : '',
+           city : '',
+           shop_name : ''
+       };
+
+        $(document).ready(function(){
+
+            $('#table').bootstrapTable({
+                url: "/business/list",
+                method: "post",
+                toolbar: '#toolbar',
+                singleSelect: 'true',
+                striped: true,	//是否显示行间隔色
+                pagination: true,
+                sortable: false,
+                sidePagination: "server",
+                sortOrder: "asc",
+                pageNumber:1,                       //初始化加载第一页，默认第一页
+                pageSize: 10,                       //每页的记录行数（*）
+                clickToSelect: true,
+                pageList: [10, 20, 50, 100],
+                // search: true,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+                queryParams : function (params) {
+                    var temp = {
+                        limit : params.limit, // 每页显示数量
+                        offset : params.offset, // SQL语句起始索引
+                        page: (params.offset / params.limit) + 1,   //当前页码
+                        id: searchItem.id,
+                        city: searchItem.city,
+                        shop_name : searchItem.shop_name
+                    };
+                    return temp;
+                },
+                onClickRow:function (row, tr,flied) {
+//                    console.log(row);
+//                    console.log(tr);
+//                    console.log(flied);
+                },
+                columns: [
+                    {
+                        field: 'state',
+                        checkbox : 'true',
+                        align: "center",
+                        valign: "middle",
+                        formatter: stateFormatter
+                    },
+                    {
+                        field: 'Number',
+                        title: '序号',
+                        align: "center",
+                        valign: "middle",
+                        formatter: function (value, row, index) {
+                            return index+1;
+                        }
+                    },
+                    {
+                        field: "city",
+                        title: "城市",
+                        align: "center",
+                        valign: "middle"
+                    },
+                    {
+                        field: "id",
+                        title: "门店编号",
+                        align: "center",
+                        valign: "middle"
+                    },
+//                    ,{
+//                        field: "name",
+//                        title: "姓名",
+//                        align: "center",
+//                        valign: "middle"
+//                    },{
+//                        field: "nickname",
+//                        title: "昵称",
+//                        align: "center",
+//                        valign: "middle"
+//                    },
+                    {
+                        field: "shop_name",
+                        title: "门店名称",
+                        align: "center",
+                        valign: "middle"
+                    },
+                    {
+                        field: "is_support_intergral",
+                        title: "积分消费",
+                        align: "center",
+                        valign: "middle"
+                    }
+
+//                    ,{
+//                        field: "phone",
+//                        title: "联系电话",
+//                        align: "center",
+//                        valign: "middle"
+//                    }
+                    // ,
+                    // {
+                    //     field: "operate",
+                    //     title: "操作",
+                    //     align: "center",
+                    //     valign: "middle",
+                    //     formatter: operateFormatter
+                    // }
+                    ]
+            });
+
+//            function operateFormatter(value, row, index){
+//                var uuid = row.id;
+//                var del = row.del;
+//
+//                var result = "";
+//                result += "<a href='javascript:;' class='btn btn-xs green' data-toggle='modal' data-target='#myModaltime' onclick=\"displayViewById('" + index + "', view='view')\" title='查看'><img src='../../static/image/display.png' style='width: 20px; height: 20px;'></a>";
+//                result += "<a href='javascript:;' class='btn btn-xs green' onclick=\"editViewById('" + index + "', view='view')\" title='编辑'><img src='../../static/image/edit.png' style='width: 20px; height: 20px;'></a>";  // data-toggle='modal' data-target='#myModal'
+//
+//                if(del == 0){
+//                    result += "<a href='javascript:;' class='btn btn-xs red' onclick=\"deleteByIds('" + uuid + "')\" title='删除'><img src='../../static/image/delete.png' style='width: 20px; height: 20px;'></a>";
+//                }else if(del == 1){
+//                    result += "<a href='javascript:;' class='btn btn-xs red' onclick=\"restoreById('" + uuid + "')\" title='恢复'><img src='../../static/image/restore.png' style='width: 20px; height: 20px;'></a>";
+//                }
+//                return result;
+//            }
+
+            function stateFormatter(value, row, index) {
+            };
+
+            laydate.render({
+                elem: '#addbirthday' //指定元素
+            });
+
+            laydate.render({
+                elem: '#updatebirthday' //指定元素
+            });
+
+        });
+
+
+       function dispplayAddModal() {
+           $('#addmyModal').modal('show');
+           $('#addphone').val('');
+           $('#addpassword').val('');
+           $('#addname').val('');
+           $('#addnickName').val('');
+           $('#addsex').val('');
+           $('#addbirthday').val('');
+           $('#addfcity').val('');
+           $('#addaddress').val('');
+           $('#addfshopName').val('');
+           $('#addshopaddress').val('');
+           $('#ddremark').val('');
+       }
+       function addBusiness() {
+
+           if($('#addname').val().trim() == '' || $('#addpassword').val().trim() == '' ||  $('#addsex').val().trim() == ''){
+               layer.msg("姓名，密码以及性别不能为空!");
+               return;
+           }else{
+               var params = {
+                   'phone': $('#addphone').val().trim(),
+                   'passwd': $('#addpassword').val().trim(),
+                   'name': $('#addname').val().trim(),
+                   'nickname': $('#addnickName').val().trim(),
+                   'sex': $('#addsex').val().trim(),
+                   'birthday': $('#addbirthday').val().trim(),
+                   'city': $('#addfcity').val().trim(),
+                   'address': $('#addaddress').val().trim(),
+                   'shop_name': $('#addfshopName').val().trim(),
+                   'shop_address': $('#addshopaddress').val().trim(),
+                   'remark': $('#ddremark').val().trim()
+               };
+
+               $.ajax({
+                   url: '/business/addBusiness',
+                   type: 'post',
+                   contentType : "application/json",
+                   ataType : "json",
+                   data: JSON.stringify(params),
+                   success: function(data){
+                       var res = JSON.parse(data);
+                       console.log(res);
+                       if(res.success == true){
+
+                           layer.msg("操作成功！",{time:2000,offset:"200px"},function(){
+                               $('#table').bootstrapTable('refresh',{url: "/business/list"});
+                           });
+                           $('#addmyModal').modal('hide')
+
+                       }else if(res.success == false){
+                           layer.msg("操作失败!");
+                           $('#addmyModal').modal('hide')
+                       }
+                   }
+               })
+
+           }
+
+
+
+
+       }
+
+        function displayView() {
+
+            var selectedRows = $("#table").bootstrapTable('getSelections');
+
+            if(selectedRows.length <= 0){
+                layer.msg("请选择要查看的商店!");
+                return;
+            }else{
+
+                $('#myModal').modal('show')
+                $('#name').val(selectedRows[0].name);
+                $('#nickName').val(selectedRows[0].nickname);
+                $('#password').val(selectedRows[0].passwd);
+                $('#phone').val(selectedRows[0].phone);
+                if(selectedRows[0].sex == 0){
+                    $('#sex').val('男');
+                }else if(selectedRows[0].sex == 1){
+                    $('#sex').val('女');
+                }else{
+                    $('#sex').val('保密');
+                }
+
+                $('#fcity').val(selectedRows[0].city);
+                $('#birthday').val(selectedRows[0].birthday.split(' ')[0]);
+                $('#address').val(selectedRows[0].address);
+                $('#fshopName').val(selectedRows[0].shop_name);
+                $('#shopaddress').val(selectedRows[0].shop_address);
+                $('#remark').val(selectedRows[0].remark);
+            }
+
+
+
+        }
+        
+        function deleteByIds(uuid) {
+            $.ajax({
+                url: '/equipment/delteEquipmentById',
+                type: 'post',
+                data: {'deleteId':uuid},
+                success: function(data){
+                    var res = JSON.parse(data);
+                    console.log(res);
+                    if(res.success == true){
+
+                        layer.msg("操作成功！",{time:2000,offset:"200px"},function(){
+                            $('#table').bootstrapTable('refresh',{url: "/equipment/list"});
+                        });
+
+                    }else if(res.success == false){
+                        layer.msg("操作失败!");
+                    }
+                }
+            })
+        }
+
+        function restoreById(uuid) {
+            $.ajax({
+                url: '/equipment/restoreEquipmentById',
+                type: 'post',
+                data: {'deleteId':uuid},
+                success: function(data){
+                    var res = JSON.parse(data);
+                    if(res.success == true){
+                        layer.msg("操作成功！",{time:2000,offset:"200px"},function(){
+                            $('#table').bootstrapTable('refresh',{url: "/equipment/list"});
+                        });
+                    }else if(res.success == false){
+                        layer.msg("操作失败!");
+                    }
+                }
+            })
+        }
+        
+        function search() {
+
+            searchItem.id = $('#businessId').val().trim();
+            searchItem.city = $('#city').val().trim();
+            searchItem.shop_name = $('#shopName').val().trim();
+            $('#table').bootstrapTable('refresh',{url: "/business/list"});
+            
+        };
+        
+        function clearValue() {
+            $('#businessId').val('');
+            $('#city').val('');
+            $('#shopName').val('');
+        }
+
+        var updateId = '';
+        function displayUpdate() {
+            var selectedRows = $("#table").bootstrapTable('getSelections');
+
+            if(selectedRows.length <= 0){
+                layer.msg("请选择要修改的商店!");
+                return;
+            }else{
+
+                console.log(selectedRows);
+                $('#updatemyModal').modal('show');
+
+                updateId = selectedRows[0].id;
+                $('#updatename').val(selectedRows[0].name);
+                $('#updatenickName').val(selectedRows[0].nickname);
+                $('#updatepassword').val(selectedRows[0].passwd);
+                $('#updatephone').val(selectedRows[0].phone);
+                if(selectedRows[0].sex == 0){
+                    $('#updatesex').val('0');
+                }else if(selectedRows[0].sex == 1){
+                    $('#updatesex').val('1');
+                }else{
+                    $('#updatesex').val('2');
+                }
+
+                $('#updatecity').val(selectedRows[0].city);
+                $('#updatebirthday').val(selectedRows[0].birthday.split(' ')[0]);
+                $('#updateaddress').val(selectedRows[0].address);
+                $('#updateshopName').val(selectedRows[0].shop_name);
+                $('#updateshopaddress').val(selectedRows[0].shop_address);
+                $('#updateremark').val(selectedRows[0].remark);
+            }
+
+
+
+        }
+        
+        function updateInfor() {
+
+            if($('#updatename').val().trim() == '' || $('#updatepassword').val().trim() == '' ||  $('#updatesex').val().trim() == ''){
+                layer.msg("姓名，密码以及性别不能为空!");
+                return;
+            }else if(updateId == ''){
+                layer.msg("系统异常!");
+                return;
+            }else{
+                var params = {
+                    'id' : updateId,
+                    'phone': $('#updatephone').val().trim(),
+                    'passwd': $('#updatepassword').val().trim(),
+                    'name': $('#updatename').val().trim(),
+                    'nickname': $('#updatenickName').val().trim(),
+                    'sex': $('#updatesex').val().trim(),
+                    'birthday': $('#updatebirthday').val().trim(),
+                    'city': $('#updatecity').val().trim(),
+                    'address': $('#updateaddress').val().trim(),
+                    'shop_name': $('#updateshopName').val().trim(),
+                    'shop_address': $('#updateshopaddress').val().trim(),
+                    'remark': $('#updateremark').val().trim()
+                };
+
+                $.ajax({
+                    url: '/business/updateBusiness',
+                    type: 'post',
+                    contentType : "application/json",
+                    ataType : "json",
+                    data: JSON.stringify(params),
+                    success: function(data){
+                        var res = JSON.parse(data);
+                        //console.log(res);
+                        if(res.success == true){
+
+                            layer.msg("操作成功！",{time:2000,offset:"200px"},function(){
+                                $('#table').bootstrapTable('refresh',{url: "/business/list"});
+                            });
+                            $('#updatemyModal').modal('hide')
+
+                        }else if(res.success == false){
+                            layer.msg("操作失败!");
+                            $('#updatemyModal').modal('hide')
+                        }
+                    }
+                })
+
+            }
+
+
+        }
+
+
+    </script>
+
+</head>
+<body>
+
+  <div style="width: 98%; margin: auto; height: 45px; background-color: #F6F5F4; margin-top: 10px; line-height: 45px; ">
+      <span style="margin-left: 15px; color: #333434; font-size: 12px;">首页</span>&nbsp;&nbsp;/&nbsp;&nbsp;<span style="font-size: 12px; color: #747370">门店管理</span>
+  </div >
+
+  <div style="width: 98%; margin: auto; height: 45px; background-color: #FFFFFF; line-height: 45px; ">
+
+      <span style="margin-left: 15px; color: #000000; font-size: 14px; font-weight: bold; margin-top: 5px;">查询条件</span>
+
+      <button id="clear" onclick="clearValue()" type="button"  class="btn btn-default" style="float: right; width: 60px; color: black; margin-left: 10px;  margin-top: 10px;">
+          <img class="menu-icon" src="../../static/image/Cancel.png" width="13">取消
+      </button>
+
+      <button id="search" onclick="search()" type="button" class="btn" style="float: right; background-color: #0078B1;color: white; width: 60px; margin-left: 10px; margin-top: 10px;">
+          <img class="menu-icon" src="../../static/image/search.png" width="13">查询
+      </button>
+
+  </div>
+
+  <div style="width: 98%; margin: auto; height: 1px; background-color: #5a6268; margin-top: 10px; line-height: 45px; "></div>
+
+  <div style="width: 98%; margin: auto; height: 45px; background-color: white; line-height: 45px; margin-top: 5px; ">
+      <div style="width: 33%; height: 45px; float: left;">
+          <span style="margin-left: 15px; float: left; color: #333434; font-size: 10px;">门店编号:</span>
+          <input type="text" id="businessId" class="form-control " style="float: left; width: 200px; margin-top: 5px; margin-left:  10px;" >
+      </div>
+
+      <div style="width: 33%; height: 45px; float: left;">
+          <span style="margin-left: 15px; color: #333434; float: left; font-size: 10px;">城市：</span>
+          <input type="text" id="city" class="form-control" style="float: left; width: 200px;  margin-top: 5px; margin-left: 10px;">
+      </div>
+
+      <div style="width: 33%; height: 45px; float: left;">
+          <span style="margin-left: 15px; color: #333434; float:left; font-size: 10px;">门店名称:</span>
+          <input type="text" id="shopName" class="form-control" style="float: left;  width: 200px; margin-top: 5px; margin-left: 10px;">
+      </div>
+  </div>
+
+  <div style="width: 98%; margin: auto; height: 10px; background-color: #F6F5F4; margin-top: 35px; "></div>
+
+
+  <div style="width: 98%; margin: auto; height: 45px; background-color: #FFFFFF; line-height: 45px; ">
+
+      <span style="margin-left: 15px; float: left; color: #000000; font-size: 14px; font-weight: bold; margin-top: 5px;">查询信息</span>
+
+      <button id="btn_view" onclick="displayView()" type="button" class="btn btn-default" style="float: right; width: 60px; margin-top: 12px; margin-left: 5px;">
+          <img src="../../static/image/Magnifier.png" width="13"></span>查看
+      </button>
+
+      <button id="btn_edit" type="button" onclick="displayUpdate()" class="btn btn-default" style="float: right; width: 60px; margin-top: 12px; margin-left: 5px;">
+          <img src="../../static/image/Edit.png" width="13">修改
+      </button>
+
+      <button id="btn_add" type="button" onclick="dispplayAddModal()" class="btn btn-default" style="float: right; width: 60px; margin-top: 12px; margin-left: 5px;">
+          <img src="../../static/image/Add.png" width="13"> 新增
+      </button>
+
+
+  </div>
+
+<table id="table" data-click-to-select="true"></table>
+
+<div id="toolbar">
+
+
+    <!--<input type="text" id="businessId" class="form-control " style="float: left; width: 150px; margin-left: 10px;"   placeholder="门店编号：">-->
+    <!--<input type="text" id="city" class="form-control" style="float: left; width: 150px; margin-left: 10px;"   placeholder="城市">-->
+    <!--<input type="text" id="shopName" class="form-control" style="float: left;  width: 150px; margin-left: 10px;"  placeholder="门店名称">-->
+
+    <!--<button id="search" onclick="search()" type="button" class="btn btn-info" style="float: left; width: 100px; margin-left: 10px;">-->
+        <!--<span class="glyphicon glyphicon-search" aria-hidden="true"></span>搜索-->
+    <!--</button>-->
+
+    <!--<button id="clear" onclick="clearValue()" type="button"  class="btn btn-warning" style="float: left; width: 100px; margin-left: 10px;">-->
+        <!--<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>清空-->
+    <!--</button>-->
+
+    <!--<button id="btn_add" type="button" onclick="dispplayAddModal()" class="btn btn-default" style="float: left; width: 100px; margin-left: 10px;">-->
+        <!--<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增-->
+    <!--</button>-->
+    <!--<button id="btn_edit" type="button" onclick="displayUpdate()" class="btn btn-default" style="float: left; width: 100px; margin-left: 10px;">-->
+        <!--<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>修改-->
+    <!--</button>-->
+    <!--<button id="btn_view" onclick="displayView()" type="button" class="btn btn-default" style="float: left; width: 100px; margin-left: 10px;">-->
+        <!--<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>查看-->
+    <!--</button>-->
+
+</div>
+
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width: 450px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">商店信息</h4>
+            </div>
+            <div class="modal-body">
+
+                <form class="bs-example bs-example-form" role="form">
+                    <div style="margin-bottom: 5px;">
+                        <span style="width: 20%; float: left;">姓名</span><input style="width: 70%;" id="name" type="text" class="form-control">
+                    </div>
+                    <div style="margin-bottom: 5px;">
+                        <span style="width: 20%; float: left;">昵称</span><input style="width: 70%;" id="nickName" type="text" class="form-control">
+                    </div>
+                    <div style="margin-bottom: 5px;">
+                        <span style="width: 20%; float: left;">密码</span><input style="width: 70%;" id="password" type="password" class="form-control">
+                    </div>
+                    <div style="margin-bottom: 5px;">
+                        <span style="width: 20%; float: left;">电话</span><input style="width: 70%;" id="phone" type="text" class="form-control">
+                    </div>
+
+                    <div style="margin-bottom: 5px;">
+                        <span style="width: 20%; float: left;">性别</span> <input  style="width: 70%;" id="sex" type="text" class="form-control">
+                    </div>
+
+                    <div style="margin-bottom: 5px;">
+                        <span  style="width: 20%; float: left;">城市</span><input style="width: 70%;" id="fcity" type="text" class="form-control">
+                    </div>
+
+                    <div style="margin-bottom: 5px;">
+                        <span style="width: 20%; float: left;">出生日期</span>
+                        <input style="width: 70%;" id="birthday" type="text" class="form-control">
+                    </div>
+
+                    <div style="margin-bottom: 5px;">
+                        <span style="width: 20%; float: left;">地址</span><input style="width: 70%;" id="address" type="text" class="form-control">
+                    </div>
+
+                    <div style="margin-bottom: 5px;">
+                        <span style="width: 20%; float: left;">商店名称</span><input style="width: 70%;" id="fshopName" type="text" class="form-control">
+                    </div>
+
+                    <div style="margin-bottom: 5px;">
+                        <span style="width: 20%; float: left;">商店地址</span><input style="width: 70%;" id="shopaddress" type="text" class="form-control">
+                    </div>
+
+                    <div style="margin-bottom: 5px;">
+                        <span style="width: 20%; float: left;">备注</span><input type="text" style="width: 70%;" id="remark" class="form-control">
+                    </div>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info" data-dismiss="modal">确定</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+
+<div class="modal fade" id="addmyModal" tabindex="-1" role="dialog" aria-labelledby="addmyModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width: 450px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="addmyModalLabel">添加商店信息</h4>
+            </div>
+            <div class="modal-body">
+
+                <form class="bs-example bs-example-form" role="form">
+                    <div style="margin-bottom: 5px;">
+                        <span style="width: 20%; float: left;">姓名</span><input style="width: 70%;" id="addname" type="text" class="form-control" placeholder="姓名">
+                    </div>
+                    <div style="margin-bottom: 5px;">
+                        <span style="width: 20%; float: left;">昵称</span><input style="width: 70%;" id="addnickName" type="text" class="form-control" placeholder="昵称">
+                    </div>
+                    <div style="margin-bottom: 5px;">
+                        <span style="width: 20%; float: left;">密码</span><input style="width: 70%;" id="addpassword" type="password" class="form-control" placeholder="密码">
+                    </div>
+                    <div style="margin-bottom: 5px;">
+                        <span style="width: 20%; float: left;">电话</span><input style="width: 70%;" id="addphone" type="text" class="form-control" placeholder="电话">
+                    </div>
+
+                    <div style="margin-bottom: 5px;">
+                        <span style="width: 20%; float: left;">性别</span>
+                        <select class="selectpicker" style="width: 70%; height: 35px;" id="addsex">
+                        <option value="">--请选择性别--</option>
+                        <option value="0">男性</option>
+                        <option value="1">女性</option>
+                        <option value="2">保密</option>
+                        </select>
+                    </div>
+
+                    <div style="margin-bottom: 5px;">
+                        <span  style="width: 20%; float: left;">城市</span><input style="width: 70%;" id="addfcity" type="text" class="form-control" placeholder="所在城市">
+                    </div>
+
+                    <div style="margin-bottom: 5px;">
+                        <span style="width: 20%; float: left;">出生日期</span>
+                        <input type="text" class="form-control" style="width: 70%;" placeholder="出生日期" id="addbirthday">
+                    </div>
+
+                    <div style="margin-bottom: 5px;">
+                        <span style="width: 20%; float: left;">地址</span><input style="width: 70%;" id="addaddress" type="text" class="form-control" placeholder="地址">
+                    </div>
+
+                    <div style="margin-bottom: 5px;">
+                        <span style="width: 20%; float: left;">商店名称</span><input style="width: 70%;" id="addfshopName" type="text" class="form-control" placeholder="商店名称">
+                    </div>
+
+                    <div style="margin-bottom: 5px;">
+                        <span style="width: 20%; float: left;">商店地址</span><input style="width: 70%;" id="addshopaddress" type="text" class="form-control" placeholder="商店地址">
+                    </div>
+
+                    <div style="margin-bottom: 5px;">
+                        <span style="width: 20%; float: left;">备注</span><input type="text" style="width: 70%;" id="ddremark" class="form-control" placeholder="备注">
+                    </div>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-info" onclick="addBusiness()">添加</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="updatemyModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width: 450px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="updateModalLabel">修改商店信息</h4>
+            </div>
+            <div class="modal-body">
+
+                <form class="bs-example bs-example-form" role="form">
+                    <div style="margin-bottom: 5px;">
+                        <span style="width: 20%; float: left;">姓名</span><input style="width: 70%;" id="updatename" type="text" class="form-control" placeholder="姓名">
+                    </div>
+                    <div style="margin-bottom: 5px;">
+                        <span style="width: 20%; float: left;">昵称</span><input style="width: 70%;" id="updatenickName" type="text" class="form-control" placeholder="昵称">
+                    </div>
+                    <div style="margin-bottom: 5px;">
+                        <span style="width: 20%; float: left;">密码</span><input style="width: 70%;" id="updatepassword" type="password" class="form-control" placeholder="密码">
+                    </div>
+                    <div style="margin-bottom: 5px;">
+                        <span style="width: 20%; float: left;">电话</span><input style="width: 70%;" id="updatephone" type="text" class="form-control" placeholder="电话">
+                    </div>
+
+                    <div style="margin-bottom: 5px;">
+                        <span style="width: 20%; float: left;">性别</span>
+                        <select class="selectpicker" style="width: 70%; height: 35px;" id="updatesex">
+                            <option value="">--请选择性别--</option>
+                            <option value="0">男性</option>
+                            <option value="1">女性</option>
+                            <option value="2">保密</option>
+                        </select>
+                    </div>
+
+                    <div style="margin-bottom: 5px;">
+                        <span  style="width: 20%; float: left;">城市</span><input style="width: 70%;" id="updatecity" type="text" class="form-control" placeholder="所在城市">
+                    </div>
+
+                    <div style="margin-bottom: 5px;">
+                        <span style="width: 20%; float: left;">出生日期</span>
+                        <input type="text" class="form-control" style="width: 70%;" placeholder="出生日期" id="updatebirthday">
+                    </div>
+
+                    <div style="margin-bottom: 5px;">
+                        <span style="width: 20%; float: left;">地址</span><input style="width: 70%;" id="updateaddress" type="text" class="form-control" placeholder="地址">
+                    </div>
+
+                    <div style="margin-bottom: 5px;">
+                        <span style="width: 20%; float: left;">商店名称</span><input style="width: 70%;" id="updateshopName" type="text" class="form-control" placeholder="商店名称">
+                    </div>
+
+                    <div style="margin-bottom: 5px;">
+                        <span style="width: 20%; float: left;">商店地址</span><input style="width: 70%;" id="updateshopaddress" type="text" class="form-control" placeholder="商店地址">
+                    </div>
+
+                    <div style="margin-bottom: 5px;">
+                        <span style="width: 20%; float: left;">备注</span><input type="text" style="width: 70%;" id="updateremark" class="form-control" placeholder="备注">
+                    </div>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-info" onclick="updateInfor()">修改</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

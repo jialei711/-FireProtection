@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>美好生活后台管理系统</title>
+        <link rel="stylesheet" href="../../static/bootstrap/css/bootstrap-theme.min.css"/>
+        <link rel="stylesheet" href="../../static/bootstrap/css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="../../static/css/css.css"/>
+    </head>
+    <body>
+
+  <!--  <nav class="navbar  navbj">
+        <div class="container-fluid">
+            <div class="navbar-header">
+             &lt;!&ndash;   <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">积分规则</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>&ndash;&gt;
+
+            </div>
+           &lt;!&ndash; <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="sys-a"><span><img src="image/tx2.jpg" th:text="${userName}>管理员</span></a></li>
+                    <li><a href="/admin/loginOut" target="_top"  style="color: white; background-color: #428BCA; margin-top: -12px; text-decoration: none;>退出</a></li>
+                </ul>
+            </div>&ndash;&gt;
+        </div>
+    </nav>-->
+    <div class="container-fluid">
+
+            <div class="main ">
+
+                <h1 class="">积分管理</h1>
+                <hr>
+                <form class="form-horizontal cont">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">新增积分规则  <a href="#">添加</a></label>
+                        <!--<div class="col-sm-1" style="color: darkorange">
+
+                        </div>-->
+                    </div>
+                    <div class="form-group">
+                        <label  class="col-sm-3 control-label"><span>1、</span>空气净化器每天运行超过</label>
+                        <div class="col-sm-1">
+                            <input type="email" class="form-control"  placeholder="6">
+                        </div>
+                        <label class="col-sm-1 control-label t-l">小时</label>
+                        <label  class="col-sm-1 control-label input-l">可以获得</label>
+                        <div class="col-sm-1">
+                            <input type="email" class="form-control"  placeholder="1">
+                        </div>
+                        <label class="col-sm-1 control-label t-l">积分</label>
+                    </div>
+                    <div class="form-group">
+                        <label  class="col-sm-3 control-label"><span>2、</span>空气净化器每天运行超过</label>
+                        <div class="col-sm-1">
+                            <input type="email" class="form-control"  placeholder="200">
+                        </div>
+                        <label class="col-sm-1 control-label t-l">小时</label>
+                        <label  class="col-sm-1 control-label input-l">可以获得</label>
+                        <div class="col-sm-1">
+                            <input type="email" class="form-control"  placeholder="5">
+                        </div>
+                        <label class="col-sm-1 control-label t-l">积分</label>
+                    </div>
+                    <div class="form-group">
+                        <label  class="col-sm-3 control-label"><span>3、</span>家用净水器每天滤水超过</label>
+                        <div class="col-sm-1">
+                            <input type="email" class="form-control"  placeholder="2">
+                        </div>
+                        <label class="col-sm-1 control-label t-l">升</label>
+                        <label  class="col-sm-1 control-label input-l">可以获得</label>
+                        <div class="col-sm-1">
+                            <input type="email" class="form-control"  placeholder="1">
+                        </div>
+                        <label class="col-sm-1 control-label t-l">积分</label>
+                    </div>
+                    <div class="form-group">
+                        <label  class="col-sm-3 control-label"><span>4、</span>家用净水器每月滤水超过</label>
+                        <div class="col-sm-1">
+                            <input type="email" class="form-control"  placeholder="80">
+                        </div>
+                        <label class="col-sm-1 control-label t-l">升</label>
+                        <label  class="col-sm-1 control-label input-l">可以获得</label>
+                        <div class="col-sm-1">
+                            <input type="email" class="form-control"  placeholder="5">
+                        </div>
+                        <label class="col-sm-1 control-label t-l">积分</label>
+                    </div>
+                    <div class="form-group">
+                        <label  class="col-sm-3 control-label"><span>5、</span>用户每年购买设备超过</label>
+                        <div class="col-sm-1">
+                            <input type="email" class="form-control"  placeholder="2">
+                        </div>
+                        <label class="col-sm-1 control-label t-l">台</label>
+                        <label  class="col-sm-1 control-label input-l">或者购买设备超过</label>
+                        <div class="col-sm-1">
+                            <input type="email" class="form-control"  placeholder="5000">
+                        </div>
+                        <label class="col-sm-1 control-label t-l">元</label>
+                        <label  class="col-sm-1 control-label">可以获得</label>
+                        <div class="col-sm-1">
+                            <input type="email" class="form-control"  placeholder="100">
+                        </div>
+                        <label class="col-sm-1 control-label t-l">积分</label>
+                    </div>
+                    <hr>
+                    <div class="form-group jfbc">
+                        <label  class="col-sm-5 control-label"></label>
+                        <div class="col-sm-4">
+                            <button type="submit" class="btn btn-default save"><img class="menu-icon" src="../../static/image/Success.png" width="16">保存</button>
+                            <button type="submit" class="btn btn-default"><img class="menu-icon" src="../../static/image/pen.png" width="16">修改</button>
+                        </div>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+    <script src="js/jquery.js"></script>
+    <script>
+        $(document).ready(function(){
+            $("#firstpane .menu_body:eq(0)").show();
+            $("#firstpane h3.menu_head").click(function(){
+                $(this).addClass("current").next("div.menu_body").slideToggle(300).siblings("div.menu_body").slideUp("slow");
+                $(this).siblings().removeClass("current");
+            });
+            $("#secondpane .menu_body:eq(0)").show();
+            $("#secondpane h3.menu_head").mouseover(function(){
+                $(this).addClass("current").next("div.menu_body").slideDown(500).siblings("div.menu_body").slideUp("slow");
+                $(this).siblings().removeClass("current");
+            });
+        });
+    </script>
+    </body>
+</html>
